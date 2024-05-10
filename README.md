@@ -22,7 +22,7 @@
    - ```composer update```
    - ```composer dumpa```
 4. Set .env file
-   - APP_KEY, APP_URL, DB_DATABASE, DB_USERNAME, DB_PASSWORD
+   - APP_KEY, APP_URL, DB_DATABASE, DB_USERNAME, DB_PASSWORD , GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT
    - For generating APP_KEY - ``` php artisan key:generate ```
 5. Migrate database :- ``` php artisan migrate ```
 6. Serve project :- ``` php artisan serve ```
