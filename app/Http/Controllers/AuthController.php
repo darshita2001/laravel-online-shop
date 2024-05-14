@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Throwable;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -13,7 +14,7 @@ class AuthController extends Controller
     public function signInwithGoogle()
     {
         return Socialite::driver('google')
-            // ->with(['prompt' => 'select_account'])
+            ->with(['prompt' => 'select_account'])
             ->redirect();
     }
 
