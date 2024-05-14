@@ -13,8 +13,11 @@
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
     <!-- Custom Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{asset('plugins/sweetalert/css/sweetalert.css')}}" rel="stylesheet">
+    <link href="{{asset('plugins/toastr/css/toastr.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/style.css')}}" rel="stylesheet">
 
+    @yield('styles')
 </head>
 
 <body>
@@ -54,6 +57,15 @@
         ***********************************-->
         <div class="content-body">
 
+            <div class="row page-titles mx-0">
+                <div class="col">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
+                    </ol>
+                </div>
+            </div>
+
             @yield('content')
             <!-- #/ container -->
         </div>
@@ -85,7 +97,13 @@
     <script src="{{asset('js/styleSwitcher.js')}}"></script>
 
     <script src="{{asset('plugins/validation/jquery.validate.min.js')}}"></script>
-    {{-- <script src="{{asset('plugins/validation/jquery.validate-init.js')}}"></script> --}}
+
+    <!-- Sweet alert -->
+    <script src="{{asset('plugins/sweetalert/js/sweetalert.min.js')}}"></script>
+
+    <!-- Toastr -->
+    <script src="./plugins/toastr/js/toastr.min.js"></script>
+
     @yield('scripts')
 </body>
 

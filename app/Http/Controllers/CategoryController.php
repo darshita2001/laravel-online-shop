@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryStoreRequest;
 use App\Interfaces\CategoryInterface;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
@@ -21,16 +22,32 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('categories.index');
+        return view('categories.list');
+    }
+
+    public function datatable()
+    {
+        try {
+            $result = $this->repo->datatable();
+
+                return response()->json([
+                    'success' => $result['success'],
+                    'data' => $result['data'],
+                    'recordsTotal' => $result['records_total'],
+                    'recordsFiltered' => $result['records_filtered'],
+                ]);
+        } catch (Throwable $th) {
+            errorLogger('CategoryController@datatable', $th);
+            return failureResponse($th->getMessage());
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryStoreRequest $request)
     {
         try {
-            infoLogger('here');
             $data = [
                 'name' => $request->name
             ];
@@ -38,7 +55,6 @@ class CategoryController extends Controller
             $this->repo->store($data);
 
             return successResponse(__('messages.category_created'), JsonResponse::HTTP_CREATED);
-
         } catch (Throwable $th) {
             errorLogger('CategoryController@store', $th);
             return failureResponse($th->getMessage());
@@ -58,7 +74,15 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        try{
+            $data = $this->repo->edit($category);
+
+            return successResponseWithData(['category'=>$data],__('messages.category_retrieved'));
+
+        }catch (Throwable $th) {
+            errorLogger('CategoryController@edit', $th);
+            return failureResponse($th->getMessage());
+        }
     }
 
     /**
