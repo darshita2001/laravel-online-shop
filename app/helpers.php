@@ -101,15 +101,15 @@ if (!function_exists('errorLogger')) {
      * Log an error message along with throwable details and request information.
      *
      * @param string $message
-     * @param Throwable $th
+     * @param Throwable $e
      * @return void
      */
 
-    function errorLogger(string $message, Throwable $th)
+    function errorLogger(string $message, Throwable $e)
     {
-        Log::error('' . $message . ' : ' . json_encode($th->getMessage()) . ' | ,
-                    Line no. : ' . $th->getLine() . ' | ,
-                    File name : ' . $th->getFile() . ' | ,
+        Log::error('' . $message . ' : ' . json_encode($e->getMessage()) . ' | ,
+                    Line no. : ' . $e->getLine() . ' | ,
+                    File name : ' . $e->getFile() . ' | ,
                     IP address : ' . request()->ip() . ' | ,
                     browser : ' . request()->header('User-Agent'));
     }

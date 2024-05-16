@@ -17,11 +17,7 @@ var KTDatatablesDataSourceAjaxServer = (function () {
                     toastr.error(jqXHR.responseJSON.message);
                 },
             },
-            columns: [
-                { data: "id" },
-                { data: "name" },
-                { data: "id" },
-            ],
+            columns: [{ data: "id" }, { data: "name" }, { data: "id" }],
             columnDefs: [
                 {
                     targets: 0,
@@ -47,7 +43,7 @@ var KTDatatablesDataSourceAjaxServer = (function () {
                         var action = `<a href="javascript:" data-toggle="modal" data-target="#categoryModal" data-id="${data}" data-placement="top" title="Edit" data-original-title="Edit" class="mr-3 edit-category">\
                                       <i class="fa fa-pencil color-muted m-r-5"></i>\
                                       </a>`;
-                            action += `<a href="javascript:" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit">\
+                        action += `<a href="javascript:" data-toggle="tooltip" data-placement="top" title="Delete" data-id="${data}" data-original-title="Delete" class="delete-category">\
                             <i class="fa fa-trash color-muted m-r-5"></i>\
                             </a>`;
 
@@ -55,11 +51,14 @@ var KTDatatablesDataSourceAjaxServer = (function () {
                     },
                 },
             ],
-            initComplete: function() {
+            initComplete: function () {
                 // Move the length and pagination controls to the same line with vertical alignment
-                var table = $('#DataTables_Table_0').DataTable();
-                var bottom = $(table.table().container()).find('div.bottom');
-                bottom.css('display', 'flex').css('align-items', 'center').css('justify-content', 'space-between');
+                var table = $("#DataTables_Table_0").DataTable();
+                var bottom = $(table.table().container()).find("div.bottom");
+                bottom
+                    .css("display", "flex")
+                    .css("align-items", "center")
+                    .css("justify-content", "space-between");
             },
         });
         datatable.on("xhr", function (e) {
@@ -76,7 +75,6 @@ var KTDatatablesDataSourceAjaxServer = (function () {
 })();
 
 $(document).ready(function () {
-
     $.ajaxSetup({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -85,16 +83,16 @@ $(document).ready(function () {
 
     KTDatatablesDataSourceAjaxServer.init();
 
-    const form = $('#category_form');
-    const submitButton = $('#category_submit');
+    const form = $("#category_form");
+    const submitButton = $("#category_submit");
 
-    form.on('submit', function (e) {
+    form.on("submit", function (e) {
         e.preventDefault();
 
         let formData = new FormData(this);
 
-        let url = '/categories';
-        let method = 'POST';
+        let url = "/categories";
+        let method = "POST";
         let updateId = submitButton.attr("update-field");
         if (updateId) {
             url += `/${updateId}`;
@@ -104,23 +102,23 @@ $(document).ready(function () {
         $.ajax({
             url: url,
             method: method,
-            dataType: 'json',
+            dataType: "json",
             data: formData,
             cache: false,
             contentType: false,
             processData: false,
             success: function (response) {
                 updateId = null;
-                $("#categoryModal").modal('hide');
+                $("#categoryModal").modal("hide");
                 toastr.success(response.message);
+                submitButton.attr("update-field", "");
                 datatable.ajax.reload(null, false);
             },
             error: function (xhr, status, message) {
                 if (xhr.responseJSON.errors != undefined) {
                     let err = "";
                     for (const key in xhr.responseJSON.errors) {
-                        const element =
-                            xhr.responseJSON.errors[key];
+                        const element = xhr.responseJSON.errors[key];
                         err += element + "\n";
                     }
 
@@ -131,32 +129,30 @@ $(document).ready(function () {
                 }
             },
         });
-    })
-
-    $("#categoryModal").on('hide.bs.modal', function(){
-        form[0].reset();
     });
 
-    $(document).on('click','.edit-category',function(){
-        let id = $(this).data('id');
-        console.log('id',id);
-        submitButton.attr('update-field',id);
+    $("#categoryModal").on("hide.bs.modal", function () {
+        form[0].reset();
+        submitButton.attr("update-field", "");
+    });
+
+    $(document).on("click", ".edit-category", function () {
+        let id = $(this).data("id");
+        submitButton.attr("update-field", id);
 
         $.ajax({
             url: `categories/${id}/edit`,
-            method: 'GET',
+            method: "GET",
             success: function (response) {
-                // updateId = null;
-                // $("#categoryModal").modal('hide');
-                // toastr.success(response.message);
-                // datatable.ajax.reload(null, false);
+                let data = response.data;
+                $("#name").val(data[0].name);
+                submitButton.attr("update-field", data.id);
             },
             error: function (xhr, status, message) {
                 if (xhr.responseJSON.errors != undefined) {
                     let err = "";
                     for (const key in xhr.responseJSON.errors) {
-                        const element =
-                            xhr.responseJSON.errors[key];
+                        const element = xhr.responseJSON.errors[key];
                         err += element + "\n";
                     }
 
@@ -167,5 +163,40 @@ $(document).ready(function () {
                 }
             },
         });
-    })
-})
+    });
+
+    $(document).on("click", ".delete-category", function () {
+        let id = $(this).data("id");
+
+        swal(
+            {
+                title: "",
+                text: "Are you sure to delete this category?",
+                type: "warning",
+                showCancelButton: !0,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it !!",
+                closeOnConfirm: !1,
+            },
+            function () {
+                $.ajax({
+                    method: "delete",
+                    url: `categories/${id}`,
+                    success: function (response) {
+                        toastr.success(response.message);
+                        datatable.ajax.reload(null, false);
+                        swal(
+                            "Deleted !!",
+                            response.message,
+                            "success"
+                        );
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        sweetAlert("Oops...", jqXHR.responseJSON.message, "error");
+
+                    },
+                });
+            }
+        );
+    });
+});

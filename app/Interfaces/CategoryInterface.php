@@ -4,10 +4,14 @@ namespace App\Interfaces;
 
 interface CategoryInterface
 {
-    public function datatable();
+    public function datatable($orderBy,$direction,$columns,$skip,$take,$search);
 
-    public function store($data);
+    public function store(array $data);
 
-    public function edit($id);
+    public function edit(int $id);
+
+    public function update(int $id,array $data);
+
+    public function destroy(int $id);
 }
 

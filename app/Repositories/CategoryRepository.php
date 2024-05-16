@@ -4,28 +4,21 @@ namespace App\Repositories;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Exceptions\NotFoundException;
 use App\Interfaces\CategoryInterface;
 
 class CategoryRepository implements CategoryInterface
 {
-    protected $model,$request;
+    protected $model, $request;
 
-    public function __construct(Category $category,Request $request)
+    public function __construct(Category $category, Request $request)
     {
         $this->model = $category;
         $this->request = $request;
     }
 
-    public function datatable()
+    public function datatable($orderBy,$direction,$columns,$skip,$take,$search)
     {
-        $orderBy = $this->request->order[0]['column'];
-        $direction = $this->request->order[0]['dir'];
-
-        $columns = ['id', 'name',];
-        $skip = $this->request->start;
-        $take = $this->request->length;
-        $search = $this->request->search['value'];
-
         $categories = $this->model->query()
             ->orderBy($columns[$orderBy], $direction)
             ->select($columns);
@@ -51,13 +44,47 @@ class CategoryRepository implements CategoryInterface
         ];
     }
 
-    public function store($data)
+    public function store(array $data)
     {
         $this->model->create($data);
     }
 
-    public function edit($id)
+    public function edit(int $id)
     {
-        return $this->model->find($id);
+        $category = $this->model->find($id);
+
+        if(empty($category))
+        {
+            throw new NotFoundException(__('messages.category_not_found'));
+        }
+
+        return $category;
+    }
+
+    public function update(int $id, array $data)
+    {
+        $category = $this->model->find($id);
+
+        if(empty($category))
+        {
+            throw new NotFoundException(__('messages.category_not_found'));
+        }
+
+        $category->update($data);
+
+        return $category;
+    }
+
+    public function destroy(int $id)
+    {
+        $category = $this->model->find($id);
+
+        if(empty($category))
+        {
+            throw new NotFoundException(__('messages.category_not_found'));
+        }
+
+        $category->delete();
+
     }
 }

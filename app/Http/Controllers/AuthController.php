@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Throwable;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -27,18 +25,20 @@ class AuthController extends Controller
                 ->where('email', $user->email)
                 ->first();
 
-            if (empty($existingUser)) {
+            if (!empty($existingUser)) {
+                Auth::login($existingUser);
+            }else{
                 $user = User::create([
                     'name' => $user->name,
                     'email' => $user->email,
                     'google_id' => $user->id
                 ]);
+                Auth::login($user);
             }
 
-            Auth::login($user);
             return redirect('/dashboard');
-        } catch (Throwable $th) {
-            errorLogger('AuthController@callbackToGoogle', $th);
+        } catch (Throwable $e) {
+            errorLogger('AuthController@callbackToGoogle', $e);
             return redirect('/login')->with('error', 'Something went wrong');
         }
     }
