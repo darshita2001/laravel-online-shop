@@ -4,6 +4,19 @@
     <link href="{{ asset('plugins/tables/css/datatable/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 @endsection
 
+@php
+    $breadcrumbs = [
+        [
+        'name' => 'Categories',
+        'link' => route('categories.index')
+        ]
+];
+@endphp
+
+@section('breadcrumbs')
+<x-breadcrumbs :breadcrumbs="$breadcrumbs"></x-breadcrumbs>
+@endsection
+
 @section('content')
     {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryModal">Launch demo modal</button> --}}
 

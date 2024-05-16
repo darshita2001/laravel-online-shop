@@ -57,14 +57,7 @@
         ***********************************-->
         <div class="content-body">
 
-            <div class="row page-titles ">
-                <div class="col d-flex justify-content-start">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
-                    </ol>
-                </div>
-            </div>
+            @yield('breadcrumbs')
 
             @yield('content')
             <!-- #/ container -->
@@ -102,7 +95,7 @@
     <script src="{{asset('plugins/sweetalert/js/sweetalert.min.js')}}"></script>
 
     <!-- Toastr -->
-    <script src="./plugins/toastr/js/toastr.min.js"></script>
+    <script src="{{asset('plugins/toastr/js/toastr.min.js')}}"></script>
 
     @yield('scripts')
 </body>

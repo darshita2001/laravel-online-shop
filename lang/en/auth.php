@@ -13,8 +13,10 @@ return [
     |
     */
 
+    'success' => 'User loggedin successfully.',
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'logout_failed' => 'Something went wrong during logout.'
 
 ];

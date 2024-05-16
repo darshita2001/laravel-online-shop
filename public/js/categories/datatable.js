@@ -124,7 +124,7 @@ $(document).ready(function () {
 
                     sweetAlert("Oops...", err, "error");
                 }
-                if (xhr.responseJSON.error != undefined) {
+                if (xhr.responseJSON.message != undefined) {
                     toastr.error(xhr.responseJSON.message);
                 }
             },
@@ -158,7 +158,7 @@ $(document).ready(function () {
 
                     sweetAlert("Oops...", err, "error");
                 }
-                if (xhr.responseJSON.error != undefined) {
+                if (xhr.responseJSON.message != undefined) {
                     toastr.error(xhr.responseJSON.message);
                 }
             },
@@ -193,7 +193,6 @@ $(document).ready(function () {
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         sweetAlert("Oops...", jqXHR.responseJSON.message, "error");
-
                     },
                 });
             }
