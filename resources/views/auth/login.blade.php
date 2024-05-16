@@ -21,6 +21,7 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{asset('css/util.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('css/main.css')}}">
+    <link href="{{asset('plugins/toastr/css/toastr.min.css')}}" rel="stylesheet">
 <!--===============================================================================================-->
 </head>
 <body style="background-color: #666666;">
@@ -28,11 +29,11 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form">
+				<form class="login100-form validate-form" id="login_form">
 					<span class="login100-form-title p-b-43">
 						Login to continue
 					</span>
-
+                    @csrf
 
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
 						<input class="input100" type="text" name="email">
@@ -42,7 +43,7 @@
 
 
 					<div class="wrap-input100 validate-input" data-validate="Password is required">
-						<input class="input100" type="password" name="pass">
+						<input class="input100" type="password" name="password">
 						<span class="focus-input100"></span>
 						<span class="label-input100">Password</span>
 					</div>
@@ -64,7 +65,7 @@
 
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
+						<button class="login100-form-btn" type="submit">
 							Login
 						</button>
 					</div>
@@ -107,6 +108,8 @@
 	<script src="{{asset('vendor/daterangepicker/daterangepicker.js')}}"></script>
 <!--===============================================================================================-->
 	<script src="{{asset('vendor/countdowntime/countdowntime.js')}}"></script>
+<!--===============================================================================================-->
+    <script src="{{asset('plugins/toastr/js/toastr.min.js')}}"></script>
 <!--===============================================================================================-->
 	<script src="{{asset('js/auth/login.js')}}"></script>
 

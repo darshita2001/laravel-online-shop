@@ -5,21 +5,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    
+
     <!-- theme meta -->
     <meta name="theme-name" content="quixlab" />
-  
-    <title>Quixlab - Bootstrap Admin Dashboard Template by Themefisher.com</title>
+    <meta content="{{ csrf_token() }}" name="csrf-token" />
+    <title>Online Shop</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
-    <!-- Pignose Calender -->
-    <link href="./plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
-    <!-- Chartist -->
-    <link rel="stylesheet" href="./plugins/chartist/css/chartist.min.css">
-    <link rel="stylesheet" href="./plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
     <!-- Custom Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{asset('plugins/sweetalert/css/sweetalert.css')}}" rel="stylesheet">
+    <link href="{{asset('plugins/toastr/css/toastr.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/style.css')}}" rel="stylesheet">
 
+    @yield('styles')
 </head>
 
 <body>
@@ -38,7 +36,7 @@
         Preloader end
     ********************-->
 
-    
+
     <!--**********************************
         Main wrapper start
     ***********************************-->
@@ -59,15 +57,17 @@
         ***********************************-->
         <div class="content-body">
 
+            @yield('breadcrumbs')
+
             @yield('content')
             <!-- #/ container -->
         </div>
-       
+
         <!--**********************************
             Content body end
         ***********************************-->
-        
-        
+
+
         <!--**********************************
             Footer start
         ***********************************-->
@@ -88,7 +88,14 @@
     <script src="{{asset('js/settings.js')}}"></script>
     <script src="{{asset('js/gleek.js')}}"></script>
     <script src="{{asset('js/styleSwitcher.js')}}"></script>
-    <script src="{{asset('js/dashboard/dashboard-1.js')}}"></script>
+
+    <script src="{{asset('plugins/validation/jquery.validate.min.js')}}"></script>
+
+    <!-- Sweet alert -->
+    <script src="{{asset('plugins/sweetalert/js/sweetalert.min.js')}}"></script>
+
+    <!-- Toastr -->
+    <script src="{{asset('plugins/toastr/js/toastr.min.js')}}"></script>
 
     @yield('scripts')
 </body>
